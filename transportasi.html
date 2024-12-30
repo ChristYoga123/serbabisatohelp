@@ -563,41 +563,42 @@
 
     // Fungsi untuk menghitung dan menampilkan rute
     function calculateRoute() {
-        if (markerAwal && markerAkhir) {
-            const startLatLng = markerAwal.getLatLng();
-            const endLatLng = markerAkhir.getLatLng();
+      if (markerAwal && markerAkhir) {
+          const startLatLng = markerAwal.getLatLng();
+          const endLatLng = markerAkhir.getLatLng();
 
-            // Hapus rute sebelumnya jika ada
-            if (routingControl) {
-                map.removeControl(routingControl);
-            }
+          // Hapus rute sebelumnya jika ada
+          if (routingControl) {
+              map.removeControl(routingControl);
+          }
 
-            // Buat rute baru
-            routingControl = L.Routing.control({
-                waypoints: [
-                    L.latLng(startLatLng.lat, startLatLng.lng),
-                    L.latLng(endLatLng.lat, endLatLng.lng)
-                ],
-                routeWhileDragging: true,
-                lineOptions: {
-                    styles: [{ color: '#3388ff', weight: 6 }]
-                },
-                show: false,
-                addWaypoints: false
-            }).addTo(map);
+          // Buat rute baru dengan konfigurasi marker yang benar
+          routingControl = L.Routing.control({
+              waypoints: [
+                  L.latLng(startLatLng.lat, startLatLng.lng),
+                  L.latLng(endLatLng.lat, endLatLng.lng)
+              ],
+              routeWhileDragging: true,
+              lineOptions: {
+                  styles: [{ color: '#3388ff', weight: 6 }]
+              },
+              show: false,
+              addWaypoints: false,
+              createMarker: function() { return null; },  // Gunakan function yang mengembalikan null
+              serviceUrl: 'https://router.project-osrm.org/route/v1'
+          }).addTo(map);
 
-            routingControl.on('routesfound', function(e) {
-                const routes = e.routes;
-                const summary = routes[0].summary;
-                // Konversi ke kilometer dan menit
-                const distance = (summary.totalDistance / 1000).toFixed(2);
-                const duration = Math.round(summary.totalTime / 60);
-                
-                $('#distance').text(distance);
-                $('#duration').text(duration);
-                $('#totalPrice').text((7200 + 2000 * distance).toLocaleString('id-ID'));
-                $('#routeInfo').show();
-            });
+          routingControl.on('routesfound', function(e) {
+              const routes = e.routes;
+              const summary = routes[0].summary;
+              const distance = (summary.totalDistance / 1000).toFixed(2);
+              const duration = Math.round(summary.totalTime / 60);
+              
+              $('#distance').text(distance);
+              $('#duration').text(duration);
+              $('#totalPrice').text((7200 + 2000 * distance).toLocaleString());
+              $('#routeInfo').show();
+          });
         }
     }
 
