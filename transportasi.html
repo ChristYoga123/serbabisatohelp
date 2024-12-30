@@ -537,6 +537,14 @@
         width: 100%;
         padding: 5px;
     }
+
+    .custom-marker {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid white;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
   </style>
 
   <script>
@@ -602,17 +610,46 @@
                 method: 'GET'
             });
             $(`#${inputId}`).val(response.display_name);
+            
+            // Tambahkan pemanggilan calculateRoute setelah alamat diperbarui
+            calculateRoute();
         } catch (error) {
             console.error('Error:', error);
             $(`#${inputId}`).val(`${lat}, ${lng}`);
+            calculateRoute();
         }
     }
 
     // Fungsi untuk membuat marker yang bisa digeser
     function createDraggableMarker(lat, lng, isAwal) {
-        const marker = L.marker([lat, lng], {
-            draggable: true
-        });
+        // Hapus marker sebelumnya jika ada
+        if (isAwal) {
+            if (markerAwal) {
+                map.removeLayer(markerAwal);
+            }
+            markerAwal = L.marker([lat, lng], { 
+                draggable: true,
+                icon: L.divIcon({
+                    className: 'custom-marker',
+                    html: `<div style="background-color: ${isAwal ? 'green' : 'red'}; width: 20px; height: 20px; border-radius: 50%;"></div>`
+                })
+            });
+            markerAwal.addTo(map);
+        } else {
+            if (markerAkhir) {
+                map.removeLayer(markerAkhir);
+            }
+            markerAkhir = L.marker([lat, lng], { 
+                draggable: true,
+                icon: L.divIcon({
+                    className: 'custom-marker',
+                    html: `<div style="background-color: ${isAwal ? 'green' : 'red'}; width: 20px; height: 20px; border-radius: 50%;"></div>`
+                })
+            });
+            markerAkhir.addTo(map);
+        }
+
+        const marker = isAwal ? markerAwal : markerAkhir;
 
         marker.on('dragend', function(event) {
             const position = event.target.getLatLng();
@@ -623,7 +660,6 @@
             $(`#${latId}`).val(position.lat);
             $(`#${lngId}`).val(position.lng);
             getAddressFromLatLng(position.lat, position.lng, inputId);
-            calculateRoute();
         });
 
         return marker;
@@ -701,13 +737,7 @@
                                 $(`#${lngId}`).val(result.x);
                                 
                                 const newMarker = createDraggableMarker(result.y, result.x, isAwal);
-                                if (isAwal) {
-                                    if (markerAwal) map.removeLayer(markerAwal);
-                                    markerAwal = newMarker;
-                                } else {
-                                    if (markerAkhir) map.removeLayer(markerAkhir);
-                                    markerAkhir = newMarker;
-                                }
+                                // Marker akan otomatis ditambahkan ke peta dan variabel global diperbarui
                                 newMarker.addTo(map);
                                 map.setView([result.y, result.x], 13);
                                 calculateRoute();
