@@ -226,7 +226,7 @@
         <div class="m-4 p-4 m-lg-5 p-lg-5">
           <h6 class="text-white"><span class="text-primary">Transportasi</span>(Ngojek)</h6>
           <h2 class="display-4 fw-bold text-white my-4">Perjalanan Nyaman, Harga Bersahabat</h2>
-          <a href="index.html" class="btn btn-light btn-bg btn-slide hover-slide-right mt-4">
+          <a href="#quote" class="btn btn-light btn-bg btn-slide hover-slide-right mt-4">
             <span>Silahkan Pesan</span>
           </a>
         </div>
@@ -575,29 +575,31 @@
             }).addTo(map);
 
             routingControl.on('routesfound', function(e) {
-                const routes = e.routes;
-                const summary = routes[0].summary;
-                const routeDistance = (summary.totalDistance / 1000).toFixed(2);
-                const duration = Math.round(summary.totalTime / 60);
-                
-                // Hitung total harga
-                const totalPrice = calculatePrice(distanceToBasecamp, parseFloat(routeDistance));
-                
-                $('#distance').text(routeDistance);
-                $('#duration').text(duration);
-                $('#totalPrice').text(totalPrice.toLocaleString());
+              const routes = e.routes;
+              const summary = routes[0].summary;
+              const routeDistance = (summary.totalDistance / 1000).toFixed(2);
+              const duration = Math.round(summary.totalTime / 60);
+              
+              // Pembulatan biaya tambahan basecamp ke kelipatan 100
+              const extraBasecampFee = Math.ceil(((distanceToBasecamp - 5) * 1000) / 100) * 100;
+              
+              // Pembulatan total harga ke kelipatan 100
+              const totalPrice = Math.ceil(calculatePrice(distanceToBasecamp, parseFloat(routeDistance)) / 100) * 100;
+              
+              $('#distance').text(routeDistance);
+              $('#duration').text(duration);
+              $('#totalPrice').text(totalPrice.toLocaleString());
 
-                // Tampilkan informasi tambahan tentang jarak ke basecamp
-                const basecampInfo = distanceToBasecamp > 5 ? 
-                    `<br>Jarak basecamp ke lokasi penjemputan: ${distanceToBasecamp.toFixed(2)} km<br>Biaya tambahan: Rp${((distanceToBasecamp - 5) * 1000).toLocaleString()} (${(distanceToBasecamp - 5).toFixed(2)} km × Rp1.000)` : 
-                    `<br>Jarak basecamp ke lokasi penjemputan: ${distanceToBasecamp.toFixed(2)} km`;
-                
-                $('#routeInfo').html(
-                    `Jarak: <span id="distance">${routeDistance}</span> km<br>
-                    Estimasi waktu: <span id="duration">${duration}</span> menit${basecampInfo}<br>
-                    Harga Total: Rp<span id="totalPrice">${totalPrice.toLocaleString()}</span>`
-                ).show();
-            });
+              const basecampInfo = distanceToBasecamp > 5 ? 
+                  `<br>Jarak basecamp ke lokasi penjemputan: ${distanceToBasecamp.toFixed(2)} km<br>Biaya tambahan: Rp${extraBasecampFee.toLocaleString()} (${(distanceToBasecamp - 5).toFixed(2)} km × Rp1.000)` : 
+                  `<br>Jarak basecamp ke lokasi penjemputan: ${distanceToBasecamp.toFixed(2)} km`;
+              
+              $('#routeInfo').html(
+                  `Jarak: <span id="distance">${routeDistance}</span> km<br>
+                  Estimasi waktu: <span id="duration">${duration}</span> menit${basecampInfo}<br>
+                  Harga Total: Rp<span id="totalPrice">${totalPrice.toLocaleString()}</span>`
+              ).show();
+          });
         }
     }
 
@@ -708,7 +710,8 @@
 
         const message = `Hii, saya baru saja memesan  To Help untuk meminta bantuan\n\n- Ojek\nTitik Penjemputan : ${lokasi_awal}\nTitik Pengantaran : ${lokasi_akhir}\nHarga : ${harga}`;
 
-        window.open(`https://api.whatsapp.com/send?phone=6289683864754&text=${encodeURIComponent(message)}`, '_blank');
+        // +6285695908981
+        window.open(`https://api.whatsapp.com/send?phone=6285695908981&text=${encodeURIComponent(message)}`, '_blank');
     });
 });
   </script>
