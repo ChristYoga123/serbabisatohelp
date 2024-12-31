@@ -181,11 +181,6 @@
                 <use xlink:href="#phone"></use>
               </svg> <span style="color: white;">0856-9590-8981</span> 
             </li>
-            <!-- <li class="time text-black fw-medium text-capitalize d-flex align-items-center ms-4">
-              <svg class="text-primary me-1" width="20" height="20">
-                <use xlink:href="#clock"></use>
-              </svg> 8:00-18:00, Sat: Closed
-            </li> -->
           </ul>
         </div>
       </div>
@@ -270,8 +265,11 @@
       </form>
 
       <div class="mt-5 d-flex flex-column">
-        <strong>Biaya: Rp<span id="harga-dasar">2000</span>/km</strong>
-        <strong>Tarif Dasar: Rp7200</strong> 
+        <strong>Biaya: Rp<span id="harga-dasar">2000</span>,00/km</strong>
+        <strong>Tarif Dasar: Rp7200,00</strong> 
+        <small class="text-danger">
+          (NB: Jika lokasi basecamp dengan lokasi penjemputan lebih dari 5 km, maka akan dikenakan biaya tambahan sebesar Rp1000,00/km)
+        </small>
       </div>
       <a id="order" class="btn btn-success mt-3">
         <i class="fas fa-location-arrow"></i> Pesan Via Whatsapp
@@ -363,30 +361,6 @@
     </div>
   </footer>
 
-
-  <!-- Video Popup -->
-  <!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-
-      <div class="modal-content">
-
-        <div class="modal-body">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><svg class="bi" width="40"
-              height="40">
-              <use xlink:href="#close-sharp"></use>
-            </svg></button>
-          <div class="ratio ratio-16x9">
-            <iframe class="embed-responsive-item" src="" id="video" allowscriptaccess="always"
-              allow="autoplay"></iframe>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </div> -->
-
   <script src="js/jquery-1.11.0.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
   <script type="text/javascript" src="js/plugins.js"></script>
@@ -433,56 +407,55 @@
   <script>
     $(document).ready(function() {
     // Inisialisasi peta
-    const map = L.map('map').setView([-1.2921, 116.8271], 13);
+    const map = L.map('map').setView([-8.171121371857444, 113.7233082269837], 13);
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
+    // // Tambah marker basecamp (non-draggable)
+    // const basecampMarker = L.marker([-8.171121371857444, 113.7233082269837], {
+    //     draggable: false,  // Pastikan marker tidak bisa di-drag
+    //     icon: L.divIcon({
+    //         className: 'custom-marker',
+    //         html: '<div style="background-color: blue; width: 20px; height: 20px; border-radius: 50%;"></div>'
+    //     })
+    // }).addTo(map);
+    // basecampMarker.bindPopup('Basecamp').openPopup();
+
     let markerAwal = null;
     let markerAkhir = null;
     let routingControl = null;
     const provider = new GeoSearch.OpenStreetMapProvider();
+    const BASECAMP_LAT = -8.171121371857444;
+    const BASECAMP_LNG = 113.7233082269837;
 
-    // Fungsi untuk menghitung dan menampilkan rute
-    function calculateRoute() {
-      if (markerAwal && markerAkhir) {
-          const startLatLng = markerAwal.getLatLng();
-          const endLatLng = markerAkhir.getLatLng();
+    // Fungsi untuk menghitung jarak antara dua titik (dalam kilometer)
+    function calculateDistance(lat1, lng1, lat2, lng2) {
+        const R = 6371; // Radius bumi dalam kilometer
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLng = (lng2 - lng1) * Math.PI / 180;
+        const a = 
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+            Math.sin(dLng/2) * Math.sin(dLng/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
 
-          // Hapus rute sebelumnya jika ada
-          if (routingControl) {
-              map.removeControl(routingControl);
-          }
+    // Fungsi untuk menghitung total harga
+    function calculatePrice(distanceToBasecamp, routeDistance) {
+        const baseFare = 7200;
+        const perKmRate = 2000;
+        let additionalFare = 0;
 
-          // Buat rute baru dengan konfigurasi marker yang benar
-          routingControl = L.Routing.control({
-              waypoints: [
-                  L.latLng(startLatLng.lat, startLatLng.lng),
-                  L.latLng(endLatLng.lat, endLatLng.lng)
-              ],
-              routeWhileDragging: true,
-              lineOptions: {
-                  styles: [{ color: '#3388ff', weight: 6 }]
-              },
-              show: false,
-              addWaypoints: false,
-              createMarker: function() { return null; },  // Gunakan function yang mengembalikan null
-              serviceUrl: 'https://router.project-osrm.org/route/v1'
-          }).addTo(map);
-
-          routingControl.on('routesfound', function(e) {
-              const routes = e.routes;
-              const summary = routes[0].summary;
-              const distance = (summary.totalDistance / 1000).toFixed(2);
-              const duration = Math.round(summary.totalTime / 60);
-              
-              $('#distance').text(distance);
-              $('#duration').text(duration);
-              $('#totalPrice').text((7200 + 2000 * distance).toLocaleString());
-              $('#routeInfo').show();
-          });
+        // Jika jarak ke basecamp lebih dari 5km
+        if (distanceToBasecamp > 5) {
+            const extraDistance = distanceToBasecamp - 5;
+            additionalFare = extraDistance * 1000; // Rp1000/km untuk jarak lebih dari 5km
         }
+
+        return baseFare + (routeDistance * perKmRate) + additionalFare;
     }
 
     // Fungsi untuk mendapatkan alamat dari koordinat
@@ -494,8 +467,6 @@
                 method: 'GET'
             });
             $(`#${inputId}`).val(response.display_name);
-            
-            // Tambahkan pemanggilan calculateRoute setelah alamat diperbarui
             calculateRoute();
         } catch (error) {
             console.error('Error:', error);
@@ -504,9 +475,134 @@
         }
     }
 
+    // Fungsi untuk setup autocomplete
+    function setupAutocomplete(inputId, latId, lngId, isAwal) {
+        let timeout = null;
+        $(`#${inputId}`).on('input', function() {
+            clearTimeout(timeout);
+            const query = $(this).val();
+            
+            timeout = setTimeout(async function() {
+                if (query.length < 3) return;
+                
+                const results = await provider.search({ query: query });
+                if (results.length > 0) {
+                    let dropdown = $('<div class="autocomplete-dropdown"></div>').css({
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        right: 0,
+                        zIndex: 1000,
+                        backgroundColor: '#fff',
+                        border: '1px solid #ddd',
+                        borderTop: 'none',
+                        maxHeight: '200px',
+                        overflowY: 'auto'
+                    });
+
+                    results.forEach(result => {
+                        $('<div class="autocomplete-item"></div>')
+                            .css({
+                                padding: '10px',
+                                cursor: 'pointer',
+                                borderBottom: '1px solid #eee'
+                            })
+                            .hover(
+                                function() { $(this).css('background-color', '#f0f0f0'); },
+                                function() { $(this).css('background-color', '#fff'); }
+                            )
+                            .text(result.label)
+                            .click(function() {
+                                $(`#${inputId}`).val(result.label);
+                                $(`#${latId}`).val(result.y);
+                                $(`#${lngId}`).val(result.x);
+                                
+                                const newMarker = createDraggableMarker(result.y, result.x, isAwal);
+                                newMarker.addTo(map);
+                                map.setView([result.y, result.x], 13);
+                                calculateRoute();
+                                
+                                dropdown.remove();
+                            })
+                            .appendTo(dropdown);
+                    });
+
+                    $(`#${inputId}`).parent().css('position', 'relative').append(dropdown);
+                }
+            }, 300);
+        });
+
+        $(document).click(function(e) {
+            if (!$(e.target).closest('.autocomplete-dropdown').length) {
+                $('.autocomplete-dropdown').remove();
+            }
+        });
+    }
+
+    // Fungsi untuk menghitung dan menampilkan rute
+    function calculateRoute() {
+        if (markerAwal && markerAkhir) {
+            const startLatLng = markerAwal.getLatLng();
+            const endLatLng = markerAkhir.getLatLng();
+
+            // Hitung jarak ke basecamp
+            const distanceToBasecamp = calculateDistance(
+                BASECAMP_LAT, 
+                BASECAMP_LNG, 
+                startLatLng.lat, 
+                startLatLng.lng
+            );
+
+            // Hapus rute sebelumnya jika ada
+            if (routingControl) {
+                map.removeControl(routingControl);
+            }
+
+            // Buat rute baru
+            routingControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(startLatLng.lat, startLatLng.lng),
+                    L.latLng(endLatLng.lat, endLatLng.lng)
+                ],
+                routeWhileDragging: true,
+                lineOptions: {
+                    styles: [{ color: '#3388ff', weight: 6 }]
+                },
+                show: false,
+                addWaypoints: false,
+                createMarker: function() { return null; },
+                serviceUrl: 'https://router.project-osrm.org/route/v1'
+            }).addTo(map);
+
+            routingControl.on('routesfound', function(e) {
+                const routes = e.routes;
+                const summary = routes[0].summary;
+                const routeDistance = (summary.totalDistance / 1000).toFixed(2);
+                const duration = Math.round(summary.totalTime / 60);
+                
+                // Hitung total harga
+                const totalPrice = calculatePrice(distanceToBasecamp, parseFloat(routeDistance));
+                
+                $('#distance').text(routeDistance);
+                $('#duration').text(duration);
+                $('#totalPrice').text(totalPrice.toLocaleString());
+
+                // Tampilkan informasi tambahan tentang jarak ke basecamp
+                const basecampInfo = distanceToBasecamp > 5 ? 
+                    `<br>Jarak basecamp ke lokasi penjemputan: ${distanceToBasecamp.toFixed(2)} km<br>Biaya tambahan: Rp${((distanceToBasecamp - 5) * 1000).toLocaleString()} (${(distanceToBasecamp - 5).toFixed(2)} km × Rp1.000)` : 
+                    `<br>Jarak basecamp ke lokasi penjemputan: ${distanceToBasecamp.toFixed(2)} km`;
+                
+                $('#routeInfo').html(
+                    `Jarak: <span id="distance">${routeDistance}</span> km<br>
+                    Estimasi waktu: <span id="duration">${duration}</span> menit${basecampInfo}<br>
+                    Harga Total: Rp<span id="totalPrice">${totalPrice.toLocaleString()}</span>`
+                ).show();
+            });
+        }
+    }
+
     // Fungsi untuk membuat marker yang bisa digeser
     function createDraggableMarker(lat, lng, isAwal) {
-        // Hapus marker sebelumnya jika ada
         if (isAwal) {
             if (markerAwal) {
                 map.removeLayer(markerAwal);
@@ -573,75 +669,10 @@
         }
     }
 
-    // Button handler untuk "Gunakan Lokasi Saya"
+    // Setup event handlers
     $('#useMyLocation').click(function() {
         getUserLocation();
     });
-
-    // Fungsi untuk setup autocomplete
-    function setupAutocomplete(inputId, latId, lngId, isAwal) {
-        let timeout = null;
-        $(`#${inputId}`).on('input', function() {
-            clearTimeout(timeout);
-            const query = $(this).val();
-            
-            timeout = setTimeout(async function() {
-                if (query.length < 3) return;
-                
-                const results = await provider.search({ query: query });
-                if (results.length > 0) {
-                    let dropdown = $('<div class="autocomplete-dropdown"></div>').css({
-                        position: 'absolute',
-                        top: '100%',
-                        left: 0,
-                        right: 0,
-                        zIndex: 1000,
-                        backgroundColor: '#fff',
-                        border: '1px solid #ddd',
-                        borderTop: 'none',
-                        maxHeight: '200px',
-                        overflowY: 'auto'
-                    });
-
-                    results.forEach(result => {
-                        $('<div class="autocomplete-item"></div>')
-                            .css({
-                                padding: '10px',
-                                cursor: 'pointer',
-                                borderBottom: '1px solid #eee'
-                            })
-                            .hover(
-                                function() { $(this).css('background-color', '#f0f0f0'); },
-                                function() { $(this).css('background-color', '#fff'); }
-                            )
-                            .text(result.label)
-                            .click(function() {
-                                $(`#${inputId}`).val(result.label);
-                                $(`#${latId}`).val(result.y);
-                                $(`#${lngId}`).val(result.x);
-                                
-                                const newMarker = createDraggableMarker(result.y, result.x, isAwal);
-                                // Marker akan otomatis ditambahkan ke peta dan variabel global diperbarui
-                                newMarker.addTo(map);
-                                map.setView([result.y, result.x], 13);
-                                calculateRoute();
-                                
-                                dropdown.remove();
-                            })
-                            .appendTo(dropdown);
-                    });
-
-                    $(`#${inputId}`).parent().css('position', 'relative').append(dropdown);
-                }
-            }, 300);
-        });
-
-        $(document).click(function(e) {
-            if (!$(e.target).closest('.autocomplete-dropdown').length) {
-                $('.autocomplete-dropdown').remove();
-            }
-        });
-    }
 
     // Setup autocomplete untuk kedua input
     setupAutocomplete('lokasi_awal', 'lat_awal', 'lng_awal', true);
@@ -663,31 +694,23 @@
             calculateRoute();
         }
     });
+
+    // Order button handler
+    $('#order').click(function() {
+        const lokasi_awal = $('#lokasi_awal').val();
+        const lokasi_akhir = $('#lokasi_akhir').val();
+        const harga = $('#totalPrice').text();
+
+        if(!lokasi_awal || !lokasi_akhir) {
+            alert('Mohon isi lokasi penjemputan dan pengantaran terlebih dahulu');
+            return;
+        }
+
+        const message = `Hii, saya baru saja memesan  To Help untuk meminta bantuan\n\n- Ojek\nTitik Penjemputan : ${lokasi_awal}\nTitik Pengantaran : ${lokasi_akhir}\nHarga : ${harga}`;
+
+        window.open(`https://api.whatsapp.com/send?phone=6289683864754&text=${encodeURIComponent(message)}`, '_blank');
+    });
 });
-
-$('#order').click(function() {
-  /*
-    Hii, saya baru saja memesan  To Help untuk meminta bantuan
-
-- Ojek
-Titik Penjemputan : 
-Titik Pengantaran : 
-Harga : 
-
-  */
-  const lokasi_awal = $('#lokasi_awal').val();
-  const lokasi_akhir = $('#lokasi_akhir').val();
-  const harga = $('#totalPrice').text();
-
-  if(!lokasi_awal || !lokasi_akhir) {
-    alert('Mohon isi lokasi penjemputan dan pengantaran terlebih dahulu');
-    return;
-  }
-
-  const message = `Hii, saya baru saja memesan  To Help untuk meminta bantuan\n\n- Ojek\nTitik Penjemputan : ${lokasi_awal}\nTitik Pengantaran : ${lokasi_akhir}\nHarga : ${harga}`;
-
-  window.open(`https://api.whatsapp.com/send?phone=6289683864754&text=${encodeURIComponent(message)}`, '_blank');
-})
   </script>
 </body>
 
