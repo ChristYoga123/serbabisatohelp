@@ -32,7 +32,36 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    .star-rating {
+      font-size: 24px;
+      cursor: pointer;
+    }
 
+    .star-rating i {
+      color: #ccc;
+      transition: color 0.2s;
+    }
+
+    .star-rating i.active {
+      color: #ffd700;
+    }
+
+    .star-rating i:hover,
+    .star-rating i:hover ~ i {
+      color: #ffd700;
+    }
+
+    .star-rating {
+      text-align: center;
+    }
+
+    .star-rating i {
+      display: inline-block;
+      padding: 0 5px;
+    }
+  </style>
 </head>
 
 <body>
@@ -254,7 +283,7 @@
         </div>
       </div>
       <div class="col-lg-6">
-        <img src="images/billboard.jpg" alt="img" class="img-fluid">
+        <img src="images/hero.png" alt="img" class="img-fluid">
       </div>
     </div>
   </section>
@@ -313,115 +342,10 @@
     </div>
   </section>
 
-  <section id="testimonial">
-    <div class="container">
-      <h6><span class="text-primary">|</span>Testimoni</h6>
-      <h3 class="display-6 fw-semibold mb-5">Kustomer kami</h3>
-      <div class="swiper testimonial-swiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="review-item">
-              <div class="review">
-                <blockquote class="mb-0">
-                  <p class="mb-0">“Pengalaman saya menggunakan jasa ojek online sangat memuaskan, mulai dari kemudahan pemesanan melalui aplikasi yang user-friendly, respons driver yang cepat, hingga perjalanan yang aman dan nyaman berkat driver yang ramah dan profesional.”</p>
-                </blockquote>
-              </div>
-              <div class="author-detail mt-4 d-flex align-items-center">
-                <div class="author-text">
-                  <h5 class="name mb-0">James Rodrigo</h6>
-                    <div class="review-star d-flex mt-2">
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="review-item">
-              <div class="review">
-                <blockquote class="mb-0">
-                  <p class="mb-0">Saya sangat terkesan dengan layanan bersih rumah ini, karena timnya datang tepat waktu, bekerja dengan detail dan teliti, serta menggunakan alat dan produk pembersih berkualitas yang membuat rumah saya benar-benar terasa lebih nyaman dan segar.”</p>
-                </blockquote>
-              </div>
-              <div class="author-detail mt-4 d-flex align-items-center">
-                <div class="author-text">
-                  <h5 class="name mb-0">Kelly Garcia</h6>
-                    <div class="review-star d-flex mt-2">
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="review-item">
-              <div class="review">
-                <blockquote class="mb-0">
-                  <p class="mb-0">“Layanan custom ini benar-benar luar biasa karena sangat fleksibel dalam memenuhi kebutuhan saya, selalu mendengarkan dengan baik apa yang saya inginkan, memberikan saran yang relevan, dan hasil akhirnya benar-benar sesuai dengan ekspektasi bahkan melebihi harapan.”</p>
-                </blockquote>
-              </div>
-              <div class="author-detail mt-4 d-flex align-items-center">
-                <div class="author-text">
-                  <h5 class="name mb-0">Karma Samuel</h6>
-                    <div class="review-star d-flex mt-2">
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                      <svg class="star me-1 text-warning" width="16" height="16">
-                        <use xlink:href="#star" />
-                      </svg>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="swiper-pagination position-relative pt-5"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="services" class="padding-small">
+  <section id="services" class="">
     <div class="service-block position-relative bg-secondary">
       <div class="jarallax service-bg"
-        style="background-image: url(images/ojek.jpg); background-size: cover; background-repeat: no-repeat;  background-position: center; ">
+        style="background-image: url(images/ojek.png); background-size: cover; background-repeat: no-repeat;  background-position: center; ">
       </div>
       <div class="container service-content position-absolute top-50 start-50 translate-middle">
         <div class="row align-items-center">
@@ -437,7 +361,7 @@
     </div>
     <div class="service-block position-relative bg-secondary">
       <div class="jarallax service-bg"
-        style="background-image: url(images/services1.jpg); background-size: cover; background-repeat: no-repeat;  background-position: center; ">
+        style="background-image: url(images/bersih-rumah.png); background-size: cover; background-repeat: no-repeat;  background-position: center; ">
       </div>
       <div class="container service-content position-absolute top-50 start-50 translate-middle">
         <div class="row align-items-center">
@@ -453,7 +377,7 @@
     </div>
     <div class="service-block position-relative bg-secondary">
       <div class="jarallax service-bg"
-        style="background-image: url(images/services3.jpg); background-size: cover; background-repeat: no-repeat;  background-position: center; ">
+        style="background-image: url(images/jasa-custom.jpg); background-size: cover; background-repeat: no-repeat;  background-position: center; ">
       </div>
       <div class="container service-content position-absolute top-50 start-50 translate-middle">
         <div class="row align-items-center">
@@ -485,38 +409,6 @@
       </div>
     </div> -->
   </section>
-
-  <!-- <section id="quote" class="padding-small">
-    <div class="container text-center">
-      <h3 class="display-6 fw-semibold mb-4">Ask with our Specialists</h3>
-      <form class="contact-form row mt-5">
-        <div class="col-lg-6 col-md-12 col-sm-12 mb-4">
-          <input type="text" name="name" placeholder="Full Name*" class="form-control w-100 ps-3 py-2 rounded-0"
-            required>
-        </div>
-        <div class="col-lg-6 col-md-12 col-sm-12 mb-4">
-          <input type="email" name="email" placeholder="Email*" class="form-control w-100 ps-3 py-2 rounded-0" required>
-        </div>
-        <div class="col-lg-6 col-md-12 col-sm-12 mb-4">
-          <input type="text" name="phone" placeholder="Phone*" class="form-control w-100 ps-3 py-2 rounded-0" required>
-        </div>
-        <div class="col-lg-6 col-md-12 col-sm-12 mb-4">
-          <input type="text" name="address" placeholder="Address*" class="form-control w-100 ps-3 py-2 rounded-0"
-            required>
-        </div>
-        <div class="col-md-12 col-sm-12 mb-4">
-          <textarea class="form-control w-100 ps-3 py-2 rounded-0" rows="6" type="text" name="message"
-            placeholder="Message"></textarea>
-        </div>
-        <div class="col-12">
-          <a href="index.html" class="btn btn-primary btn-slide hover-slide-right mt-4">
-            <span>Send now</span>
-          </a>
-        </div>
-      </form>
-    </div>
-  </section> -->
-
 
   <!-- <section id="blog">
     <div class="container">
@@ -608,7 +500,7 @@
     </div>
   </section> -->
 
-  <section id="features" class="padding-small" style="margin-top: -140px;">
+  <section id="features" class="padding-small" style="margin-top: -10px;">
     <div class="container">
       <div class="row">
         <div class="text-center col-lg-3 col-md-6 mb-4 mb-lg-0">
@@ -644,7 +536,10 @@
   </section>
 
   <section id="cta" class="my-5"
-    style="background-image: url(images/cta-bg.jpg); background-size: cover; background-repeat: no-repeat;  background-position: center">
+    style="background-image: linear-gradient(rgba(5, 33, 60, 0.5), rgba(5, 33, 60, 0.5)), url(images/hero-bg.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;">
     <div class="container padding-small">
       <div class="row g-lg-5 align-items-center">
         <!-- <div class="col-lg-6 mb-5 mb-lg-0">
@@ -670,6 +565,60 @@
       </div>
     </div>
   </section>
+
+  <section id="quote" class="padding-small">
+    <div class="container text-center">
+      <h3 class="display-6 fw-semibold">Testimonimu Adalah Semangat Kami</h3>
+      <!-- Add alert containers -->
+      <div class="alert alert-success alert-dismissible fade" id="success-alert" role="alert">
+        Terima kasih! Testimonial Anda telah berhasil dikirim.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div class="alert alert-danger alert-dismissible fade" id="error-alert" role="alert">
+        Maaf, terjadi kesalahan. Silakan coba lagi.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <form name="tohelpserbabisa-testimonial-form">
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+          <input type="text" name="nama" placeholder="Nama*" class="form-control w-100 ps-3 py-2 rounded-0"
+            required>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+          <!-- Star Rating -->
+          <div class="star-rating">
+            <input type="hidden" name="rating" id="rating-value" required>
+            <i class="fas fa-star" data-rating="1"></i>
+            <i class="fas fa-star" data-rating="2"></i>
+            <i class="fas fa-star" data-rating="3"></i>
+            <i class="fas fa-star" data-rating="4"></i>
+            <i class="fas fa-star" data-rating="5"></i>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-12 mb-4">
+          <textarea class="form-control w-100 ps-3 py-2 rounded-0" rows="6" type="text" name="ulasan"
+            placeholder="Ulasan*" required></textarea>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary btn-slide hover-slide-right mt-4" id="submit-btn">
+            <span id="button-text">Kirim</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section id="testimonial">
+    <div class="container">
+        <h6><span class="text-primary">|</span>Testimoni</h6>
+        <h3 class="display-6 fw-semibold mb-5">Kustomer kami</h3>
+        <div class="swiper testimonial-swiper">
+            <div class="swiper-wrapper" id="testimonial-wrapper">
+                <!-- Testimonial items will be inserted here -->
+            </div>
+            <div class="swiper-pagination position-relative pt-5"></div>
+        </div>
+    </div>
+</section>
 
   <footer id="footer">
     <div class="container padding-small">
@@ -894,7 +843,7 @@
 
     </div>
   </div>
-
+  
   <script src="js/jquery-1.11.0.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
   <script type="text/javascript" src="js/plugins.js"></script>
@@ -906,6 +855,190 @@
       let year = new Date().getFullYear();
       document.getElementById('year').innerHTML = year;
     });
+  </script>
+  <script>
+    // Get Testi
+    $(document).ready(function() {
+        // Ganti dengan ID spreadsheet Anda
+        const SPREADSHEET_ID = '1f6iFwKDvRr0xJCsdsS01H-4Hl9I2EiTo6vDS8Rabq5c';
+        const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv`;
+
+        function generateStars(rating) {
+            let starsHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const starClass = i < rating ? 'text-warning' : 'text-muted';
+                starsHTML += `
+                    <svg class="star me-1 ${starClass}" width="16" height="16">
+                        <use xlink:href="#star" />
+                    </svg>`;
+            }
+            return starsHTML;
+        }
+
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            return lines.map(line => {
+                const row = line.split(',');
+                return {
+                    timestamp: row[0],
+                    name: row[1],
+                    review: row[2],
+                    rating: parseInt(row[3])
+                };
+            }).filter(row => row.name && row.review); // Filter baris kosong
+        }
+
+        function createTestimonialHTML(testimonial) {
+            return `
+                <div class="swiper-slide">
+                    <div class="review-item">
+                        <div class="review">
+                            <blockquote class="mb-0">
+                                <p class="mb-0">"${testimonial.review}"</p>
+                            </blockquote>
+                        </div>
+                        <div class="author-detail mt-4 d-flex align-items-center">
+                            <div class="author-text">
+                                <h5 class="name mb-0">${testimonial.name}</h5>
+                                <div class="review-star d-flex mt-2">
+                                    ${generateStars(testimonial.rating)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        // Fetch data dari spreadsheet
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'text',
+            success: function(response) {
+                const testimonials = parseCSV(response);
+                const testimonialHTML = testimonials.map(createTestimonialHTML).join('');
+                $('#testimonial-wrapper').html(testimonialHTML);
+
+                // Inisialisasi Swiper setelah konten dimuat
+                new Swiper('.testimonial-swiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true
+                    },
+                    breakpoints: {
+                        768: {
+                            slidesPerView: 2
+                        },
+                        1024: {
+                            slidesPerView: 3
+                        }
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                $('#testimonial-wrapper').html(
+                    '<p class="text-danger">Error loading testimonials: ' + error + '</p>'
+                );
+            }
+        });
+    });
+    // Post Testi
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwOTqTG16LWBJp7frNhDdQ8H7ByW-8oe-gJIpjZCRVKJEMVXpgXDrSMD_tAm-k_uml4sQ/exec'
+    const form = document.forms['tohelpserbabisa-testimonial-form']
+    const submitBtn = document.querySelector('#submit-btn')
+    const buttonText = document.querySelector('#button-text')
+    const successAlert = document.querySelector('#success-alert')
+    const errorAlert = document.querySelector('#error-alert')
+    const stars = document.querySelectorAll('.star-rating i')
+    const ratingInput = document.querySelector('#rating-value')
+
+    // Star Rating Handler
+    stars.forEach(star => {
+      star.addEventListener('mouseover', function() {
+        const rating = this.getAttribute('data-rating')
+        highlightStars(rating)
+      })
+
+      star.addEventListener('mouseout', function() {
+        const currentRating = ratingInput.value
+        if (currentRating) {
+          highlightStars(currentRating)
+        } else {
+          stars.forEach(s => s.classList.remove('active'))
+        }
+      })
+
+      star.addEventListener('click', function() {
+        const rating = this.getAttribute('data-rating')
+        ratingInput.value = rating
+        highlightStars(rating)
+      })
+    })
+
+    function highlightStars(rating) {
+      stars.forEach(star => {
+        const starRating = star.getAttribute('data-rating')
+        if (starRating <= rating) {
+          star.classList.add('active')
+        } else {
+          star.classList.remove('active')
+        }
+      })
+    }
+
+    function setLoading(isLoading) {
+      if (isLoading) {
+        submitBtn.disabled = true
+        buttonText.textContent = 'Loading...'
+      } else {
+        submitBtn.disabled = false
+        buttonText.textContent = 'Send now'
+      }
+    }
+
+    function showAlert(element) {
+      element.classList.add('show')
+      setTimeout(() => {
+        element.classList.remove('show')
+      }, 3000)
+    }
+
+    function resetForm() {
+      form.reset()
+      stars.forEach(star => star.classList.remove('active'))
+      ratingInput.value = ''
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+      
+      if (!ratingInput.value) {
+        alert('Silakan berikan rating bintang')
+        return
+      }
+      
+      setLoading(true)
+      
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+          setLoading(false)
+          if (response.ok) {
+            showAlert(successAlert)
+            resetForm()
+          } else {
+            showAlert(errorAlert)
+          }
+        })
+        .catch(error => {
+          console.error('Error!', error.message)
+          setLoading(false)
+          showAlert(errorAlert)
+        })
+    })
+
+    
   </script>
 </body>
 
